@@ -45,6 +45,11 @@ def get_latest_prime():
     global last_prime
     return jsonify({'prime': last_prime})
 
+# Route to render index.html
+@app.route('/')
+def index():
+    return render_template('index.html')  
+
 # Start the prime number calculation thread when the app starts
 start_prime_calculation()
 
