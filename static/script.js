@@ -14,4 +14,4 @@ async function fetchLatestPrime() {
     }
 }
 
-setInterval(fetchLatestPrime, 1000);
+setInterval(fetchLatestPrime, 0);
