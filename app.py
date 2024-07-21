@@ -1,9 +1,8 @@
 from flask import Flask, jsonify, render_template
 import math
 from flask_cors import CORS
-import threading
-import time
 import logging
+from threading import Lock
 
 app = Flask(__name__)
 CORS(app)
@@ -13,25 +12,29 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 last_prime = 2
-prime_lock = threading.Lock()
+prime_lock = Lock()
 
 def is_prime(n):
-    return n > 1 and all(n % i for i in range(2, int(math.sqrt(n)) + 1))
+    if n < 2:
+        return False
+    for i in range(2, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+    return True
 
-def generate_primes():
+def generate_next_prime():
     global last_prime
-    while True:
-        with prime_lock:
-            while not is_prime(last_prime):
-                last_prime += 1
-            last_prime += 1
-            logger.info(f"Generated new prime: {last_prime - 1}")
-        time.sleep(1)  # Adjust this value to control the speed of generation
+    with prime_lock:
+        candidate = last_prime + 1
+        while not is_prime(candidate):
+            candidate += 1
+        last_prime = candidate
+        logger.info(f"Generated new prime: {last_prime}")
+    return last_prime
 
 @app.route('/api/latestPrime')
 def get_latest_prime():
-    with prime_lock:
-        prime = last_prime - 1
+    prime = generate_next_prime()
     logger.info(f"Returning prime: {prime}")
     return jsonify({'prime': prime})
 
@@ -41,8 +44,5 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    logger.info("Starting prime generation thread")
-    prime_thread = threading.Thread(target=generate_primes, daemon=True)
-    prime_thread.start()
     logger.info("Starting Flask application")
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=True)
