@@ -10,7 +10,7 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 400px;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 20px;
@@ -19,25 +19,22 @@ body {
 }
 
 h1 {
-    font-size: 36px;
+    font-size: 32px;
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 3px;
 }
 
 #prime-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+    margin-top: 20px;
 }
 
-#prime-container p {
+#prime-number {
+    font-size: 48px;
     background-color: #4287f5;
     color: #ffffff;
-    font-size: 24px;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 20px;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin: 0;
 }
