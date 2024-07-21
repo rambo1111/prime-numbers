@@ -2,7 +2,8 @@ from flask import Flask, jsonify, render_template
 import math
 from flask_cors import CORS
 import logging
-from threading import Lock
+from threading import Thread, Lock
+import time
 
 app = Flask(__name__)
 CORS(app)
@@ -22,19 +23,21 @@ def is_prime(n):
             return False
     return True
 
-def generate_next_prime():
+def generate_primes():
     global last_prime
-    with prime_lock:
-        candidate = last_prime + 1
-        while not is_prime(candidate):
-            candidate += 1
-        last_prime = candidate
-        logger.info(f"Generated new prime: {last_prime}")
-    return last_prime
+    while True:
+        with prime_lock:
+            candidate = last_prime + 1
+            while not is_prime(candidate):
+                candidate += 1
+            last_prime = candidate
+            logger.info(f"Generated new prime: {last_prime}")
+        time.sleep(1)  # Sleep for 1 second to avoid excessive CPU usage
 
 @app.route('/api/latestPrime')
 def get_latest_prime():
-    prime = generate_next_prime()
+    with prime_lock:
+        prime = last_prime
     logger.info(f"Returning prime: {prime}")
     return jsonify({'prime': prime})
 
@@ -43,6 +46,12 @@ def index():
     logger.info("Serving index page")
     return render_template('index.html')
 
+def run_prime_generator():
+    logger.info("Starting prime generation thread")
+    prime_thread = Thread(target=generate_primes, daemon=True)
+    prime_thread.start()
+
 if __name__ == '__main__':
+    run_prime_generator()
     logger.info("Starting Flask application")
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
