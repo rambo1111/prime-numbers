@@ -1,6 +1,6 @@
 # app.py
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 import math
 from flask_cors import CORS
 import threading  # Import threading to run a separate thread for prime number calculation
