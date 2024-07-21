@@ -2,10 +2,19 @@
 
 from flask import Flask, jsonify, render_template
 import math
-from flask_cors import CORS
+from fastapi.middleware.cors import CORSMiddleware
 
-app = Flask(__name__)
-CORS(app)
+app = FastAPI()
+
+# Configure CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["POST"],
+    allow_headers=["*"],
+)
+
 
 last_prime = 0
 
