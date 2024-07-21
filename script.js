@@ -21,14 +21,26 @@ function updatePrimeNumber(number) {
 function printPrimes() {
     let i = parseInt(localStorage.getItem('lastPrime')) || 0; // Get last printed prime or start from 0
 
-    setInterval(function() {
+    const intervalId = setInterval(function() {
         if (isPrime(i)) {
             updatePrimeNumber(i);
             localStorage.setItem('lastPrime', i); // Store the last printed prime
         }
         i++;
     }, 100); // Adjust interval (milliseconds) for performance
+
+    // Save interval ID to localStorage to resume when tab is closed and reopened
+    localStorage.setItem('intervalId', intervalId.toString());
 }
 
 // Call the function to start printing prime numbers
 printPrimes();
+
+// Function to resume printing primes when the tab is reopened
+window.onload = function() {
+    const intervalId = parseInt(localStorage.getItem('intervalId'));
+    if (!isNaN(intervalId)) {
+        clearInterval(intervalId); // Clear previous interval if any
+        printPrimes(); // Start printing primes again
+    }
+};
