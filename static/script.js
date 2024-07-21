@@ -9,6 +9,7 @@ function updatePrimeNumber(number) {
 // Function to fetch the latest prime number from backend
 async function fetchLatestPrime() {
     try {
+        console.log('Fetching latest prime...');
         const response = await fetch('/api/latestPrime');
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -20,7 +21,6 @@ async function fetchLatestPrime() {
         console.error('Error fetching latest prime:', error.message);
     }
 }
-
 
 // Function to continuously fetch and display prime numbers
 function continuousFetch() {
