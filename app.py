@@ -26,7 +26,7 @@ def generate_primes():
                 last_prime += 1
             last_prime += 1
             logger.info(f"Generated new prime: {last_prime - 1}")
-        time.sleep(0)  # Adjust this value to control the speed of generation
+        time.sleep(0.001)  # Adjust this value to control the speed of generation
 
 @app.route('/api/latestPrime')
 def get_latest_prime():
