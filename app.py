@@ -1,5 +1,3 @@
-# app.py
-
 from flask import Flask, jsonify, render_template
 import math
 from flask_cors import CORS 
