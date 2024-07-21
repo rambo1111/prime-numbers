@@ -22,7 +22,7 @@ async function fetchLatestPrime() {
 
 // Function to continuously fetch and display prime numbers
 function continuousFetch() {
-    setInterval(fetchLatestPrime, 1000); // Adjust interval as needed
+    setInterval(fetchLatestPrime, 0); // Adjust interval as needed
 }
 
 // Call the function to start fetching prime numbers
