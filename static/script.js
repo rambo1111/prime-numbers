@@ -1,5 +1,3 @@
-// static/script.js
-
 // Function to update the displayed prime number
 function updatePrimeNumber(number) {
     const primeNumberDisplay = document.getElementById('prime-number');
