@@ -14,13 +14,13 @@ function isPrime(n) {
 // Function to print prime numbers indefinitely to the page
 function printPrimes() {
     let i = parseInt(localStorage.getItem('lastPrime')) || 0; // Get last printed prime or start from 0
-    const primeList = document.getElementById('prime-numbers');
+    const primeContainer = document.getElementById('prime-container');
 
     setInterval(function() {
         if (isPrime(i)) {
             const primeItem = document.createElement('p');
             primeItem.textContent = i;
-            primeList.appendChild(primeItem);
+            primeContainer.appendChild(primeItem);
             localStorage.setItem('lastPrime', i); // Store the last printed prime
         }
         i++;
