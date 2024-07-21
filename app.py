@@ -2,8 +2,11 @@
 
 from flask import Flask, jsonify, render_template
 import math
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 last_prime = 0
 
 # Function to check if a number is prime
@@ -26,8 +29,10 @@ def get_latest_prime():
     global last_prime
     while True:
         if is_prime(last_prime):
-            return jsonify({'prime': last_prime})
+            last_prime += 1  # Increment last_prime to find the next prime number
+            return jsonify({'prime': last_prime - 1})  # Return the found prime number
         last_prime += 1
+
 
 # Route to render index.html
 @app.route('/')
