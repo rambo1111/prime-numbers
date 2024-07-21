@@ -1,20 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prime Numbers</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Prime Numbers</h1>
-        <div id="prime-container">
-            <!-- Prime number will be displayed here -->
-            <p id="prime-number">-</p>
-        </div>
-    </div>
+// Function to check if a number is prime
+function isPrime(n) {
+    if (n <= 1) {
+        return false;
+    }
+    for (let i = 2; i <= Math.sqrt(n); i++) {
+        if (n % i === 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+// Function to update the displayed prime number
+function updatePrimeNumber(number) {
+    const primeNumberDisplay = document.getElementById('prime-number');
+    primeNumberDisplay.textContent = number;
+}
+
+// Function to print prime numbers indefinitely and update display
+function printPrimes() {
+    let i = parseInt(localStorage.getItem('lastPrime')) || 0; // Get last printed prime or start from 0
+
+    setInterval(function() {
+        if (isPrime(i)) {
+            updatePrimeNumber(i);
+            localStorage.setItem('lastPrime', i); // Store the last printed prime
+        }
+        i++;
+    }, 100); // Adjust interval (milliseconds) for performance
+}
+
+// Call the function to start printing prime numbers
+printPrimes();
