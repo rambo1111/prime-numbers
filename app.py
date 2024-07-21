@@ -1,15 +1,11 @@
-# app.py
-
 from flask import Flask, jsonify, render_template
 import math
-from flask_cors import CORS
-import threading  # Import threading to run a separate thread for prime number calculation
+from flask_cors import CORS 
 
 app = Flask(__name__)
 CORS(app)
 
 last_prime = 0
-prime_calculation_thread = None  # Initialize a variable to hold the thread object
 
 # Function to check if a number is prime
 def is_prime(n):
@@ -25,33 +21,22 @@ def is_prime(n):
             return False
     return True
 
-# Function to continuously calculate prime numbers
-def calculate_primes():
-    global last_prime
-    while True:
-        if is_prime(last_prime):
-            last_prime += 1
-        last_prime += 1
-
-# Start a thread for continuous prime number calculation
-def start_prime_calculation():
-    global prime_calculation_thread
-    prime_calculation_thread = threading.Thread(target=calculate_primes)
-    prime_calculation_thread.start()
-
 # Endpoint to fetch the latest prime number
 @app.route('/api/latestPrime')
 def get_latest_prime():
     global last_prime
-    return jsonify({'prime': last_prime})
+    while True:
+        if is_prime(last_prime):
+            last_prime += 1  # Increment last_prime to find the next prime number
+            return jsonify({'prime': last_prime - 1})  # Return the found prime number
+        last_prime += 1
+
 
 # Route to render index.html
 @app.route('/')
 def index():
-    return render_template('index.html')  
+    return render_template('index.html')
 
-# Start the prime number calculation thread when the app starts
-start_prime_calculation()
-
+# Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
